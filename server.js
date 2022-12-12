@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 app.use(express.static("./public"));
 const { engine } = require("express-handlebars");
+const { getSign, addSign } = require("./db.js");
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 //  bodyParser makes sure that we can parse the incoming req bodies
