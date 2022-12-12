@@ -1,0 +1,27 @@
+<h1>Some random petition.</h1>
+
+<span class="text">Some random stuff
+    <b> more random stuff</b>.<br />
+    Some random explanation.</span>
+
+{{#if error}}
+    <span class="error">Sign !!</span>
+{{/if}}
+
+<div class="inputs">
+    <form class="input" method="post">
+        <div>
+            <input id="hiddeninput" type="hidden" name="signature" />
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+        </div>
+        <div>
+            <canvas id="canvas" width="610px" height="230px"></canvas>
+        </div>
+        <div>
+            <button type="button" id="resetsign">Reset Signature</button>
+        </div>
+        <div>
+            <button id="submit">Submit Signature</button>
+        </div>
+    </form>
+</div>
