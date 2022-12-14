@@ -5,12 +5,12 @@ const db = spicedPg(
     `postgres:${SQL_USER}:${SQL_PASSWORD}@localhost:5432/petition`
 );
 
-module.exports.getAllSignatures = () => {
+module.exports.getSign = () => {
     const q = `SELECT * FROM signatures`;
     return db.query(q);
 };
 
-module.exports.addSignature = (signature, user_id) => {
+module.exports.addSign = (signature, user_id) => {
     const q = `
         INSERT INTO signatures (signature, user_id)
         VALUES ($1, $2)

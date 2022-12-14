@@ -2,21 +2,32 @@
 
 const express = require("express");
 const app = express();
-app.use(express.static("./public"));
+const bodyParser = require("body-parser");
 const { engine } = require("express-handlebars");
 const { getSign, addSign } = require("./db.js");
+const { hash, compare } = require("./bcrypt.js");
+
+app.use(express.static("./public"));
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 //  bodyParser makes sure that we can parse the incoming req bodies
-const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-    res.render("main", {
-        layout: "main",
-    });
+    return res.redirect("/registration");
+});
+
+// ---------- REGISTRATION PAGE ----------
+
+//GET
+app.get("/registration", (req, res) => {
+    return res.render("registration");
+});
+
+app.post("/registration", (req, res) => {
+    const body = req.boddy;
 });
 
 // ---------- PETITION PAGE ----------
