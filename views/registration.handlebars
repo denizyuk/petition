@@ -7,7 +7,7 @@
         <p>Sign up here!</p>
 
         <div id="register">
-            <form method="POST">
+            <form action="/registration" method="POST">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}" />
                 <input
                     type="text"
@@ -48,7 +48,7 @@
     <img id="imgRegister" src="" alt="" />
 
     <div id="goToLogin">
-        Or click
+
         <a href="/login">Go</a>
         to log in
     </div>
