@@ -13,7 +13,7 @@ module.exports.hash = (password) => {
     });
 };
 */
-//Tim
+
 module.exports.hash = (password) => {
     /*
     const salt = bcrypt.genSaltSync(10);
@@ -67,7 +67,7 @@ module.exports.authenticate = function (email, password) {
             }
         );
         */
-        //return bcrypt.CompareSync(password, result.rows[0].password); //Tim
+        //return bcrypt.CompareSync(password, result.rows[0].password); //
     });
 };
 
