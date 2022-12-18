@@ -3,3 +3,10 @@ canvas {
     border: 1px solid black;
     margin: 20px;
 }
+
+body {
+    background-image: linear-gradient(
+        rgba(236, 234, 225, 0.5),
+        rgba(11, 9, 119, 0.759)
+    );
+}

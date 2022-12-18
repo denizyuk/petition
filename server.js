@@ -126,6 +126,9 @@ app.post("/petition", (req, res) => {
 // ---------- THANKS PAGE ----------
 
 app.get("/thanks", (req, res) => {
+    if (!req.session.userId && !req.session.signatureId) {
+        return res.redirect("/registration");
+    }
     res.render("thanks", {
         layout: "main",
     });
@@ -134,9 +137,106 @@ app.get("/thanks", (req, res) => {
 // ---------- SIGNERS PAGE ----------
 
 app.get("/signers", (req, res) => {
+    if (!req.session.userId && !req.session.signatureId) {
+        return res.redirect("/registration");
+    }
     res.render("signers", {
         layout: "main",
     });
+});
+
+// ---------- PROFILE ----------
+
+app.get("/profile", (req, res) => {
+    if (req.session.userId && req.session.signatureId) {
+        res.redirect("/thanks");
+    } else {
+        res.render("profile", { title: "profile" });
+    }
+});
+
+app.post("/profile", (req, res) => {
+    let age = req.body.age;
+    let city = req.body.city;
+    let homepage = req.body.homepage;
+    let user_id = req.session.userId;
+
+    db.insertProfile(age, city, homepage, user_id)
+        .then(() => {
+            res.redirect("/petition");
+        })
+        .catch((err) => {
+            console.log("ERROR: ", err);
+        });
+});
+
+// ---------- EDIT ----------
+
+app.get("/edit", (req, res) => {
+    if (!req.session.userId && !req.session.signatureId) {
+        res.redirect("/login");
+    } else {
+        let user_id = req.session.userId;
+        db.getAllUserInfo(user_id)
+            .then((rows) => {
+                // console.log(rows[0].first_name);
+                res.render("edit", {
+                    title: "edit your profile",
+                    first_name: rows[0].first_name,
+                    last_name: rows[0].last_name,
+                    email: rows[0].email,
+                    age: rows[0].age,
+                    city: rows[0].city,
+                    homepage: rows[0].homepage,
+                });
+            })
+            .catch((err) => {
+                console.log("ERROR in getAllUserInfo: ", err);
+            });
+    }
+});
+
+app.post("/edit", (req, res) => {
+    if (!req.session.userId && !req.session.signatureId) {
+        res.redirect("/login");
+    } else {
+        let user_id = req.session.userId;
+        let first_name = req.body.first_name;
+        let last_name = req.body.last_name;
+        let email = req.body.email;
+        let password = req.body.password;
+        let age = req.body.age;
+        let city = req.body.city;
+        let homepage = req.body.homepage;
+        let userUpdatePromise;
+
+        if (password) {
+            userUpdatePromise = db.updateUserDataWithPassword(
+                user_id,
+                first_name,
+                last_name,
+                email,
+                password
+            );
+        } else {
+            userUpdatePromise = db.updateUserDataWithoutPassword(
+                user_id,
+                first_name,
+                last_name,
+                email
+            );
+        }
+        userUpdatePromise
+            .then(() => {
+                return db.upsertUserProfileData(age, city, homepage, user_id);
+            })
+            .then(() => {
+                res.redirect("/petition");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 });
 
 // ---------- LOCALHOST ----------
