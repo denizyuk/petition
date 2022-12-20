@@ -4,7 +4,7 @@
         <h2>Edit your Profile!</h2>
     </div>
 
-    <form class="editForm" action="/profile/edit" method="POST">
+    <form class="editForm" action="/profile" method="POST">
 
         <div class="editInputs">
             <label for="first_name">First name:</label>
@@ -36,7 +36,6 @@
                 class="editInput"
                 name="email"
                 required
-                pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{1,63}$"
                 title="Invalid email address"
                 value="{{email}}"
             />
@@ -90,6 +89,7 @@
 
         <div class="editInputs">
             <input class="editbutton" type="submit" value="submit" />
+
         </div>
 
     </form>

@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
     if (req.session.userId && !req.session.signatureId) {
         res.redirect("/petition");
     } else if (req.session.userId && req.session.signatureId) {
-        res.redirect("/petition/thanks");
+        res.redirect("/thanks");
     } else {
         res.redirect("/registration");
     }
@@ -78,8 +78,7 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
-    //console.log("email", email);
-    //console.log("pass", password);
+
     db.findUserByEmail(email).then((result) => {
         console.log(result);
         db.authenticate(email, password).then((success) => {
@@ -138,20 +137,27 @@ app.get("/thanks", (req, res) => {
 
 app.get("/signers", (req, res) => {
     if (!req.session.userId && !req.session.signatureId) {
-        return res.redirect("/registration");
+        res.redirect("/login");
+    } else if (req.session.userId && !req.session.signatureId) {
+        res.redirect("/petition");
+    } else {
+        db.getAllSignatures()
+            .then((rows) => {
+                res.render("signers", { title: "signers", rows });
+            })
+            .catch((err) => {
+                console.log("something wrong in getAllSignatures: ", err);
+            });
     }
-    res.render("signers", {
-        layout: "main",
-    });
 });
 
 // ---------- PROFILE ----------
 
 app.get("/profile", (req, res) => {
     if (req.session.userId && req.session.signatureId) {
-        res.redirect("/thanks");
+        res.render("profile");
     } else {
-        res.render("profile", { title: "profile" });
+        res.render("login", { layout: "login" });
     }
 });
 
@@ -179,7 +185,6 @@ app.get("/edit", (req, res) => {
         let user_id = req.session.userId;
         db.getAllUserInfo(user_id)
             .then((rows) => {
-                // console.log(rows[0].first_name);
                 res.render("edit", {
                     title: "edit your profile",
                     first_name: rows[0].first_name,
@@ -237,6 +242,13 @@ app.post("/edit", (req, res) => {
                 console.log(err);
             });
     }
+});
+
+// ---------- LOGOUT ----------
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/logIn");
 });
 
 // ---------- LOCALHOST ----------
