@@ -41,7 +41,9 @@ body h1 {
 }
 
 .Inputs {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .registerInput {
@@ -53,4 +55,10 @@ body h1 {
     width: 100%;
     height: 35px;
     font-size: 15px;
+}
+
+.container-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
