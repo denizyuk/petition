@@ -252,6 +252,6 @@ app.get("/logout", (req, res) => {
 });
 
 // ---------- LOCALHOST ----------
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log("Server is up bruv  localhost:8080");
 });
