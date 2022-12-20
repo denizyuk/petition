@@ -244,6 +244,29 @@ app.post("/edit", (req, res) => {
     }
 });
 
+// ---------- CITY ----------
+app.get("/signers/:city", (req, res) => {
+    if (!req.session.userId && !req.session.signatureId) {
+        res.redirect("/login");
+    } else if (req.session.userId && !req.session.signatureId) {
+        res.redirect("/petition");
+    } else {
+        let city = req.params.city;
+        db.getAllSignersByCity(city)
+            .then((rows) => {
+                // console.log(rows);
+                res.render("signerscity", {
+                    title: "Signatures by City",
+                    rows,
+                    city,
+                });
+            })
+            .catch((err) => {
+                console.log("ERROR", err);
+            });
+    }
+});
+
 // ---------- LOGOUT ----------
 
 app.get("/logout", (req, res) => {
