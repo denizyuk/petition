@@ -169,7 +169,7 @@ app.post("/profile", (req, res) => {
 
     db.insertProfile(age, city, homepage, user_id)
         .then(() => {
-            res.redirect("/petition");
+            res.redirect("/thanks");
         })
         .catch((err) => {
             console.log("ERROR: ", err);
@@ -236,7 +236,7 @@ app.post("/edit", (req, res) => {
                 return db.upsertUserProfileData(age, city, homepage, user_id);
             })
             .then(() => {
-                res.redirect("/petition");
+                res.redirect("/thanks");
             })
             .catch((err) => {
                 console.log(err);
